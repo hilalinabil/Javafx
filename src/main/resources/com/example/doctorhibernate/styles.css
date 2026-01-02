@@ -1,0 +1,215 @@
+/* ==============================================
+   1. GLOBAL VARIABLES & ROOT
+   ============================================== */
+.root {
+    /* Define colors here as variables */
+    -fx-primary: #2563eb;          /* Blue */
+    -fx-bg-color: #f3f4f6;         /* Light Gray Background */
+    -fx-text-base: #1f2937;        /* Dark Text */
+    -fx-white: #ffffff;
+
+    /* Apply them */
+    -fx-background-color: -fx-bg-color; /* Points to variable (Safe) */
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-text-fill: -fx-text-base;
+}
+
+/* ==============================================
+   2. SIDEBAR NAVIGATION
+   ============================================== */
+.sidebar {
+    -fx-background-color: -fx-white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 0);
+    -fx-border-color: #e5e7eb;
+    -fx-border-width: 0 1 0 0;
+}
+
+.sidebar-dark {
+    -fx-background-color: #111827; /* Dark sidebar for Main View */
+}
+
+.sidebar-scroll {
+    -fx-background: -fx-white;
+    -fx-background-color: -fx-white;
+}
+
+.brand-label {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-primary;
+}
+
+/* Light Sidebar Buttons (Sub-views) */
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 12 20;
+    -fx-font-size: 14px;
+    -fx-text-fill: #4b5563;
+    -fx-cursor: hand;
+}
+.nav-button:hover {
+    -fx-background-color: #eff6ff;
+    -fx-text-fill: -fx-primary;
+}
+.active-nav {
+    -fx-background-color: #eff6ff;
+    -fx-text-fill: -fx-primary;
+    -fx-border-color: -fx-primary;
+    -fx-border-width: 0 4 0 0;
+}
+
+/* Dark Sidebar Buttons (Main Dashboard) */
+.nav-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #d1d5db;
+    -fx-font-size: 14px;
+    -fx-padding: 12 20;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER_LEFT;
+}
+.nav-btn:hover {
+    -fx-background-color: #1f2937;
+    -fx-text-fill: white;
+}
+
+/* ==============================================
+   3. TEXT & HEADERS
+   ============================================== */
+.header-bar {
+    -fx-background-color: -fx-white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 0, 5, 0, 0);
+}
+
+.header-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.header-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #9ca3af;
+}
+
+.section-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #374151;
+}
+
+/* ==============================================
+   4. BUTTONS
+   ============================================== */
+/* Base button style reset */
+.button {
+    -fx-cursor: hand;
+    -fx-background-radius: 6;
+    -fx-padding: 8 16;
+    -fx-font-weight: bold;
+}
+
+.btn-primary {
+    -fx-background-color: -fx-primary;
+    -fx-text-fill: white;
+}
+.btn-primary:hover {
+    -fx-background-color: #1d4ed8;
+}
+
+.btn-warning {
+    -fx-background-color: #f59e0b; /* Orange */
+    -fx-text-fill: white;
+}
+.btn-warning:hover {
+    -fx-background-color: #d97706;
+}
+
+.btn-danger {
+    -fx-background-color: #ef4444; /* Red */
+    -fx-text-fill: white;
+}
+.btn-danger:hover {
+    -fx-background-color: #dc2626;
+}
+
+.btn-outline {
+    -fx-background-color: transparent;
+    -fx-border-color: #9ca3af;
+    -fx-border-radius: 6;
+    -fx-text-fill: #4b5563;
+}
+.btn-outline:hover {
+    -fx-background-color: #e5e7eb;
+}
+
+/* ==============================================
+   5. FORM INPUTS
+   ============================================== */
+.text-field, .text-area, .combo-box {
+    -fx-background-radius: 4;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 4;
+    -fx-background-color: white;
+    -fx-padding: 8;
+}
+.text-field:focused, .text-area:focused, .combo-box:focused {
+    -fx-border-color: -fx-primary;
+}
+
+/* ==============================================
+   6. TABLES & CARDS
+   ============================================== */
+.card {
+    -fx-background-color: -fx-white;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 2);
+    -fx-padding: 20;
+}
+
+.table-view {
+    -fx-background-color: transparent;
+    -fx-base: -fx-white;
+    -fx-control-inner-background: -fx-white;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 0, 2, 8, 0);
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #f9fafb;
+    -fx-border-color: #e5e7eb;
+    -fx-border-width: 0 0 1 0;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-size: 40px;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #e5e7eb;
+}
+
+/* ==============================================
+   7. MISC (Vitals, Link Buttons)
+   ============================================== */
+.vital-value {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+.status-good { -fx-text-fill: #16a34a; -fx-font-size: 12px; -fx-font-weight: bold; }
+.status-ideal { -fx-text-fill: -fx-primary; -fx-font-size: 12px; -fx-font-weight: bold; }
+.status-neutral { -fx-text-fill: #4b5563; -fx-font-size: 12px; -fx-font-weight: bold; }
+
+.link-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-primary;
+    -fx-cursor: hand;
+    -fx-underline: true;
+    -fx-padding: 0;
+}
+
+.user-avatar {
+    -fx-background-color: #dbeafe;
+    -fx-text-fill: -fx-primary;
+    -fx-font-weight: bold;
+    -fx-background-radius: 50%;
+}

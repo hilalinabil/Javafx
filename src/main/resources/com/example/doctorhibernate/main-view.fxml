@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="mainLayout" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="1200.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.doctorhibernate.controller.MainController">
+
+    <left>
+        <VBox prefWidth="240.0" styleClass="sidebar-dark" BorderPane.alignment="CENTER">
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <padding>
+                        <Insets bottom="30.0" left="20.0" top="30.0" />
+                    </padding>
+                    <children>
+                        <Label text="🏥" textFill="WHITE">
+                            <font>
+                                <Font size="24.0" />
+                            </font>
+                        </Label>
+                        <VBox>
+                            <children>
+                                <Label text="MediCare" textFill="WHITE">
+                                    <font>
+                                        <Font name="System Bold" size="20.0" />
+                                    </font>
+                                </Label>
+                                <Label text="Admin Panel" textFill="#9ca3af">
+                                    <font>
+                                        <Font size="12.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+
+                <VBox spacing="5.0">
+                    <children>
+                        <Label text="MANAGEMENT" textFill="#6b7280">
+                            <font>
+                                <Font name="System Bold" size="11.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="20.0" />
+                            </VBox.margin>
+                        </Label>
+
+                        <Button alignment="BASELINE_LEFT" maxWidth="Infinity" mnemonicParsing="false" onAction="#showPatients" styleClass="nav-btn" text="👨‍🦱  Patients" />
+                        <Button alignment="BASELINE_LEFT" maxWidth="Infinity" mnemonicParsing="false" onAction="#showDoctors" styleClass="nav-btn" text="👨‍⚕️  Doctors" />
+                        <Button alignment="BASELINE_LEFT" maxWidth="Infinity" mnemonicParsing="false" onAction="#showRooms" styleClass="nav-btn" text="🛏  Rooms" />
+                        <Button alignment="BASELINE_LEFT" maxWidth="Infinity" mnemonicParsing="false" onAction="#showTreatments" styleClass="nav-btn" text="💊  Treatments" />
+                        <Button alignment="BASELINE_LEFT" maxWidth="Infinity" onAction="#showBilling" styleClass="nav-btn" text="💰  Billing" />
+                    </children>
+                </VBox>
+
+                <Pane VBox.vgrow="ALWAYS" />
+
+                <VBox spacing="10.0">
+                    <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" />
+                    </padding>
+                    <children>
+                        <Separator opacity="0.1" />
+                        <Button alignment="BASELINE_LEFT" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleLogout" styleClass="nav-btn" text="🚪  Log Out" />
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </left>
+
+    <top>
+    </top>
+
+    <center>
+        <BorderPane style="-fx-background-color: #f3f4f6;">
+            <center>
+                <Label text="Loading..." textFill="#9ca3af" />
+            </center>
+        </BorderPane>
+    </center>
+</BorderPane>

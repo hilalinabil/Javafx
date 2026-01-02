@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!-- ===== DATABASE CONNECTION SETTINGS ===== -->
+
+
+        <!-- Database dialect - optimizes SQL for specific database -->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+
+        <!-- JDBC driver - allows Java to communicate with MySQL -->
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+
+        <!-- Database connection URL -->
+        <!-- localhost:3306 = where MySQL is running -->
+        <!-- hsopistaldb = database name -->
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/hostpiatldb</property>
+
+        <!-- Database username -->
+        <property name="hibernate.connection.username">root</property>
+
+        <!-- Database password -->
+        <property name="hibernate.connection.password">root</property>
+
+        <!-- ===== CONNECTION POOL SETTINGS ===== -->
+        <!-- C3P0 is a connection pool library -->
+        <!-- Why? Creating database connections is slow, so we reuse them -->
+
+        <!--
+
+        Minimum connections to keep open
+        <property name="hibernate.c3p0.min_size">5</property>
+
+        -->
+
+        <!--
+        Maximum connections allowed
+        <property name="hibernate.c3p0.max_size">20</property>
+        -->
+
+        <!--
+        Close connection after this many seconds of inactivity
+        <property name="hibernate.c3p0.timeout">1800</property>
+        -->
+
+        <!-- ===== HIBERNATE SESSION MANAGEMENT ===== -->
+        <!-- How Hibernate manages database sessions -->
+        <property name="hibernate.current_session_context_class">thread</property>
+
+        <!-- ===== SQL OUTPUT SETTINGS ===== -->
+        <!--
+        Show actual SQL queries being executed
+        <property name="hibernate.show_sql">true</property>
+        -->
+
+        <!-- Format SQL nicely (with line breaks and indentation) -->
+        <property name="hibernate.format_sql">true</property>
+
+        <!-- Add comments to SQL showing which entity caused the query -->
+        <property name="hibernate.use_sql_comments">true</property>
+
+        <!-- ===== DATABASE SCHEMA GENERATION ===== -->
+        <!-- auto = automatically create/update tables based on @Entity classes -->
+        <!-- Options:
+             create = drop all tables, create new (CAREFUL! Loses data!)
+             create-drop = create on startup, drop on shutdown
+             update = add new columns/tables, keep existing data (SAFE FOR DEVELOPMENT)
+             validate = just check schema matches entities, no changes
+             none = don't touch database
+        -->
+        <property name="hibernate.hbm2ddl.auto">update</property>
+
+        <!-- ===== ENTITY MAPPING ===== -->
+        <!-- Tell Hibernate which classes are entities -->
+        <!-- Each @Entity class must be listed here -->
+        <mapping class="com.example.doctorhibernate.entities.Doctor"/>
+    </session-factory>
+</hibernate-configuration>
