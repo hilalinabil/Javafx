@@ -8,7 +8,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.Optional;
 
@@ -42,12 +41,12 @@ public class DoctorController {
     @FXML
     public void initialize() {
         // 1. Configure Columns
-        colMatr.setCellValueFactory(new PropertyValueFactory<>("matr"));
-        colFirstName.setCellValueFactory(new PropertyValueFactory<>("first_name"));
-        colLastName.setCellValueFactory(new PropertyValueFactory<>("last_name"));
-        colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-        colSpeciality.setCellValueFactory(new PropertyValueFactory<>("speciality"));
-        colDepartment.setCellValueFactory(new PropertyValueFactory<>("department"));
+        colMatr.setCellValueFactory(cell -> new javafx.beans.property.SimpleObjectProperty<>(cell.getValue().getMatr()));
+        colFirstName.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getFirst_name()));
+        colLastName.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getLast_name()));
+        colEmail.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getEmail()));
+        colSpeciality.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getSpeciality()));
+        colDepartment.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getDepartment()));
 
         // Handle potential null license numbers gracefully
         colLicense.setCellValueFactory(cell ->

@@ -9,7 +9,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 public class BillController {
 
@@ -31,10 +30,15 @@ public class BillController {
     @FXML
     public void initialize() {
         // Setup Table
-        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colDate.setCellValueFactory(new PropertyValueFactory<>("issueDate"));
-        colTotal.setCellValueFactory(new PropertyValueFactory<>("totalAmount"));
-        colRoom.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
+        colId.setCellValueFactory(cell -> new javafx.beans.property.SimpleObjectProperty<>(cell.getValue().getId()));
+        colDate.setCellValueFactory(cell -> {
+            if (cell.getValue().getIssueDate() != null) {
+                return new SimpleStringProperty(cell.getValue().getIssueDate().toString());
+            }
+            return new SimpleStringProperty("N/A");
+        });
+        colTotal.setCellValueFactory(cell -> new javafx.beans.property.SimpleObjectProperty<>(cell.getValue().getTotalAmount()));
+        colRoom.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getRoomNumber() != null ? cell.getValue().getRoomNumber() : "N/A"));
 
         colPatient.setCellValueFactory(cell ->
                 new SimpleStringProperty(cell.getValue().getPatient().getCin()));

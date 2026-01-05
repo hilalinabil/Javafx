@@ -16,7 +16,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.StringConverter;
 
 import java.util.List;
@@ -59,10 +58,10 @@ public class PatientController {
     @FXML
     public void initialize() {
         // 1. Configure Table Columns
-        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colFirstName.setCellValueFactory(new PropertyValueFactory<>("first_name"));
-        colLastName.setCellValueFactory(new PropertyValueFactory<>("last_name"));
-        colCin.setCellValueFactory(new PropertyValueFactory<>("cin"));
+        colId.setCellValueFactory(cell -> new javafx.beans.property.SimpleObjectProperty<>(cell.getValue().getId()));
+        colFirstName.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getFirst_name()));
+        colLastName.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getLast_name()));
+        colCin.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getCin()));
 
         // Custom Cell Factory for Room: Show "101 (ICU)" instead of object
         colRoom.setCellValueFactory(cell -> {
@@ -190,8 +189,18 @@ public class PatientController {
             public Doctor fromString(String string) { return null; }
         });
 
-        // ListView for treatments usually relies on .toString() of the entity,
-        // or you can set a CellFactory similar to ComboBox if needed.
+        // Configure ListView to display Treatment properly
+        treatmentList.setCellFactory(param -> new ListCell<Treatment>() {
+            @Override
+            protected void updateItem(Treatment treatment, boolean empty) {
+                super.updateItem(treatment, empty);
+                if (empty || treatment == null) {
+                    setText(null);
+                } else {
+                    setText(treatment.getDescription() + " (" + treatment.getTreatmentType() + ") - $" + treatment.getCost());
+                }
+            }
+        });
     }
 
     private void refreshTable() {

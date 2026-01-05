@@ -27,8 +27,6 @@ public class Treatment {
     @Column(name = "treatment_type")
     private TreatmentType treatmentType;
 
-    //@ManyToOne //bzaff dyal treatment aykon l patient wahed
-    // @JoinColumn(name = "patient_id") //Clé étrangère
-    //private Patient patient;
+
 
 }

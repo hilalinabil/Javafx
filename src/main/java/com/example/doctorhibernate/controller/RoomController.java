@@ -1,7 +1,5 @@
 package com.example.doctorhibernate.controller;
 
-import com.example.doctorhibernate.config.HibernateConfig;
-import com.example.doctorhibernate.dao.RoomDao;
 import com.example.doctorhibernate.dao.daoImpl.RoomDaoImpl;
 import com.example.doctorhibernate.entities.Room;
 import com.example.doctorhibernate.exception.AppException;
@@ -12,7 +10,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 
 public class RoomController {
@@ -37,10 +34,10 @@ public class RoomController {
 
     @FXML
     public void initialize() {
-        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colNumber.setCellValueFactory(new PropertyValueFactory<>("number"));
-        colType.setCellValueFactory(new PropertyValueFactory<>("type"));
-        colCapacity.setCellValueFactory(new PropertyValueFactory<>("capacity"));
+        colId.setCellValueFactory(cell -> new javafx.beans.property.SimpleObjectProperty<>(cell.getValue().getId()));
+        colNumber.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getNumber()));
+        colType.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getType()));
+        colCapacity.setCellValueFactory(cell -> new javafx.beans.property.SimpleObjectProperty<>(cell.getValue().getCapacity()));
         
         // Set occupied column to show "Occupied" or "Not Occupied"
         colOccupied.setCellValueFactory(cellData -> {
