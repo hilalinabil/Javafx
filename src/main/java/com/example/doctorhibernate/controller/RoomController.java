@@ -38,11 +38,22 @@ public class RoomController {
         colNumber.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getNumber()));
         colType.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getType()));
         colCapacity.setCellValueFactory(cell -> new javafx.beans.property.SimpleObjectProperty<>(cell.getValue().getCapacity()));
-        
-        // Set occupied column to show "Occupied" or "Not Occupied"
+
         colOccupied.setCellValueFactory(cellData -> {
-            boolean occupied = cellData.getValue().isOccupied();
-            return new SimpleStringProperty(occupied ? "Occupied" : "Not Occupied");
+            Room room = cellData.getValue();
+
+            // 1. On récupère la liste des patients et la capacité
+            // (On ajoute une protection au cas où la liste est null)
+            int currentPatients = (room.getPatients() != null) ? room.getPatients().size() : 0;
+            int maxCapacity = room.getCapacity(); // Supposons que c'est 4
+
+            // 2. La logique : Est-ce que c'est plein ?
+            if (currentPatients >= maxCapacity) {
+                return new SimpleStringProperty("Occupied"); // Ou "Complet"
+            } else {
+                // Affiche "Not Occupied" (ou mieux : "Available 1/4")
+                return new SimpleStringProperty("Not Occupied (" + currentPatients + "/" + maxCapacity + ")");
+            }
         });
 
         // Add edit and delete buttons column

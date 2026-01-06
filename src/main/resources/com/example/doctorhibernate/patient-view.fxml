@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="1100.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.doctorhibernate.controller.PatientController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="1100.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.doctorhibernate.controller.PatientController">
 
     <top>
         <HBox alignment="CENTER_LEFT" styleClass="header-bar" BorderPane.alignment="CENTER">
@@ -34,9 +34,9 @@
     </top>
 
     <left>
-        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefWidth="350.0" styleClass="sidebar-scroll" BorderPane.alignment="CENTER">
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="836.0" prefWidth="503.0" styleClass="sidebar-scroll" BorderPane.alignment="CENTER">
             <content>
-                <VBox spacing="12.0" styleClass="sidebar">
+                <VBox prefHeight="834.0" prefWidth="574.0" spacing="12.0" styleClass="sidebar">
                     <padding>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                     </padding>
@@ -52,13 +52,21 @@
                             <children>
                                 <VBox HBox.hgrow="ALWAYS">
                                     <children>
-                                        <Label text="First Name" />
+                                        <Label text="First Name *" textFill="#dc2626">
+                                            <font>
+                                                <Font name="System Bold" size="11.0" />
+                                            </font>
+                                        </Label>
                                         <TextField fx:id="firstNameField" promptText="John" />
                                     </children>
                                 </VBox>
                                 <VBox HBox.hgrow="ALWAYS">
                                     <children>
-                                        <Label text="Last Name" />
+                                        <Label text="Last Name *" textFill="#dc2626">
+                                            <font>
+                                                <Font name="System Bold" size="11.0" />
+                                            </font>
+                                        </Label>
                                         <TextField fx:id="lastNameField" promptText="Doe" />
                                     </children>
                                 </VBox>
@@ -67,21 +75,33 @@
 
                         <VBox spacing="5.0">
                             <children>
-                                <Label text="CIN (ID Number)" />
+                                <Label text="CIN (ID Number) *" textFill="#dc2626">
+                                    <font>
+                                        <Font name="System Bold" size="11.0" />
+                                    </font>
+                                </Label>
                                 <TextField fx:id="cinField" promptText="AB123456" />
                             </children>
                         </VBox>
 
                         <VBox spacing="5.0">
                             <children>
-                                <Label text="Email" />
+                                <Label text="Email *" textFill="#dc2626">
+                                    <font>
+                                        <Font name="System Bold" size="11.0" />
+                                    </font>
+                                </Label>
                                 <TextField fx:id="emailField" promptText="john.doe@example.com" />
                             </children>
                         </VBox>
 
                         <VBox spacing="5.0">
                             <children>
-                                <Label text="Phone" />
+                                <Label text="Phone *" textFill="#dc2626">
+                                    <font>
+                                        <Font name="System Bold" size="11.0" />
+                                    </font>
+                                </Label>
                                 <TextField fx:id="phoneField" promptText="+212 6..." />
                             </children>
                         </VBox>
@@ -122,11 +142,16 @@
 
                         <VBox spacing="5.0" VBox.vgrow="ALWAYS">
                             <children>
-                                <Label text="Select Treatments (Hold Ctrl/Cmd to select multiple)" wrapText="true">
-                                    <font>
-                                        <Font size="11.0" />
-                                    </font>
-                                </Label>
+                                <HBox alignment="CENTER_LEFT" prefHeight="33.0" prefWidth="441.0" spacing="5.0">
+                                    <children>
+                                        <Label text="Select Treatments (Hold Ctrl/Cmd to select multiple)" wrapText="true" HBox.hgrow="ALWAYS">
+                                            <font>
+                                                <Font size="11.0" />
+                                            </font>
+                                        </Label>
+                                        <Button maxWidth="126.0" mnemonicParsing="false" onAction="#handleAddTreatment" prefHeight="33.0" prefWidth="126.0" styleClass="btn-primary" text="+ Add Treatment" />
+                                    </children>
+                                </HBox>
                                 <ListView fx:id="treatmentList" prefHeight="150.0" styleClass="checkbox-list-view" />
                             </children>
                         </VBox>
@@ -139,7 +164,8 @@
 
                         <HBox spacing="10.0">
                             <children>
-                                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleSaveButton" styleClass="btn-primary" text="✓ Register Patient" HBox.hgrow="ALWAYS" />
+                                <Button fx:id="saveButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleSaveButton" styleClass="btn-primary" text="✓ Register Patient" HBox.hgrow="ALWAYS" />
+                                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleClear" styleClass="btn-secondary" text="↻ Clear" HBox.hgrow="ALWAYS" />
                                 <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleDelete" styleClass="btn-danger" text="🗑 Delete Selected" HBox.hgrow="ALWAYS" />
                             </children>
                         </HBox>

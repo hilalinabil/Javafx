@@ -28,5 +28,4 @@ public class Treatment {
     private TreatmentType treatmentType;
 
 
-
 }

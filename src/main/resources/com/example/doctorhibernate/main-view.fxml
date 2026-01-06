@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="mainLayout" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="1200.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.doctorhibernate.controller.MainController">
+<BorderPane fx:id="mainLayout" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="1200.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.doctorhibernate.controller.MainController">
 
     <left>
         <VBox prefWidth="240.0" styleClass="sidebar-dark" BorderPane.alignment="CENTER">
@@ -27,7 +27,7 @@
                         </Label>
                         <VBox>
                             <children>
-                                <Label text="MediCare" textFill="WHITE">
+                                <Label text="MedNexus" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="20.0" />
                                     </font>
@@ -53,8 +53,8 @@
                             </VBox.margin>
                         </Label>
 
-                        <Button alignment="BASELINE_LEFT" maxWidth="Infinity" mnemonicParsing="false" onAction="#showPatients" styleClass="nav-btn" text="👨‍🦱  Patients" />
-                        <Button alignment="BASELINE_LEFT" maxWidth="Infinity" mnemonicParsing="false" onAction="#showDoctors" styleClass="nav-btn" text="👨‍⚕️  Doctors" />
+                        <Button alignment="BASELINE_LEFT" maxWidth="Infinity" mnemonicParsing="false" onAction="#showPatients" styleClass="nav-btn" text="👨‍ Patients" />
+                        <Button alignment="BASELINE_LEFT" maxWidth="Infinity" mnemonicParsing="false" onAction="#showDoctors" styleClass="nav-btn" text="👨‍ Doctors" textFill="#460c0c" />
                         <Button alignment="BASELINE_LEFT" maxWidth="Infinity" mnemonicParsing="false" onAction="#showRooms" styleClass="nav-btn" text="🛏  Rooms" />
                         <Button alignment="BASELINE_LEFT" maxWidth="Infinity" mnemonicParsing="false" onAction="#showTreatments" styleClass="nav-btn" text="💊  Treatments" />
                         <Button alignment="BASELINE_LEFT" maxWidth="Infinity" onAction="#showBilling" styleClass="nav-btn" text="💰  Billing" />

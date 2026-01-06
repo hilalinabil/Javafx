@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "rooms")
 @Getter
@@ -32,4 +35,6 @@ public class Room {
 
     @Column(name = "patient_cin")
     private String patientCin;
+    @OneToMany(mappedBy = "room", fetch = FetchType.EAGER)
+    private List<Patient> patients = new ArrayList<>();
 }
