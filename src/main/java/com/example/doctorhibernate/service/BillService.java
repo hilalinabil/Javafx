@@ -7,5 +7,8 @@ import java.util.List;
 
 public interface BillService {
     Bill generateBillForPatient(Patient patient);
+
     List<Bill> getAllBills();
+
+    void deleteBill(Long id);
 }

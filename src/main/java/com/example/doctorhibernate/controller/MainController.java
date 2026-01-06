@@ -60,12 +60,10 @@ public class MainController {
     private void loadView(String fxmlFileName, String title) {
         try {
             // 1. Load the FXML file
-            // NOTE: Ensure the path is correct relative to resources
             URL fxmlUrl = getClass().getResource("/com/example/doctorhibernate/" + fxmlFileName);
 
-            // If your FXML files are directly in resources, use: getClass().getResource("/" + fxmlFileName);
             if (fxmlUrl == null) {
-                // Fallback for flat structure
+                // Fallback
                 fxmlUrl = getClass().getResource("/" + fxmlFileName);
             }
 
@@ -76,10 +74,20 @@ public class MainController {
 
             Parent view = FXMLLoader.load(fxmlUrl);
 
-            // 2. Set the view into the Center of the BorderPane
+            // 2. Set Opacity to 0 for Fade In
+            view.setOpacity(0);
+
+            // 3. Set the view into the Center of the BorderPane
             mainLayout.setCenter(view);
 
-            // 3. Update Title
+            // 4. Play Fade Animation
+            javafx.animation.FadeTransition fadeTransition = new javafx.animation.FadeTransition(
+                    javafx.util.Duration.millis(300), view);
+            fadeTransition.setFromValue(0);
+            fadeTransition.setToValue(1);
+            fadeTransition.play();
+
+            // 5. Update Title
             if (titleLabel != null) {
                 titleLabel.setText(title);
             }
@@ -87,6 +95,18 @@ public class MainController {
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Error loading view: " + fxmlFileName);
+            // Show error to user to help debugging
+            if (mainLayout.getCenter() instanceof javafx.scene.layout.BorderPane) {
+                javafx.scene.layout.BorderPane centerPane = (javafx.scene.layout.BorderPane) mainLayout.getCenter();
+                if (centerPane.getCenter() instanceof Label) {
+                    ((Label) centerPane.getCenter()).setText("Error: " + e.getMessage());
+                }
+            } else {
+                // Fallback if structure changed
+                Label errorLabel = new Label("Error loading " + fxmlFileName + ":\n" + e.getCause());
+                errorLabel.setStyle("-fx-text-fill: red; -fx-wrap-text: true;");
+                mainLayout.setCenter(errorLabel);
+            }
         }
     }
 }

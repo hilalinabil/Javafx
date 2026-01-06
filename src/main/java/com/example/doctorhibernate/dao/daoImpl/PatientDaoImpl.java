@@ -4,7 +4,7 @@ import com.example.doctorhibernate.config.HibernateConfig;
 import com.example.doctorhibernate.dao.PatientDao;
 import com.example.doctorhibernate.entities.Patient;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
@@ -17,11 +17,11 @@ import java.util.Optional;
 public class PatientDaoImpl implements PatientDao {
 
     private final static Logger logger = LoggerFactory.getLogger(PatientDaoImpl.class);
-    private final SessionFactory sessionFactory = HibernateConfig.getSessionFactory();
+    // Removed sessionFactory field
 
     @Override
     public Patient save(Patient patient) {
-        Session session = sessionFactory.openSession();
+        Session session = HibernateConfig.getSessionFactory().openSession();
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
@@ -50,7 +50,7 @@ public class PatientDaoImpl implements PatientDao {
 
     @Override
     public Patient update(Patient patient) {
-        Session session = sessionFactory.openSession();
+        Session session = HibernateConfig.getSessionFactory().openSession();
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
@@ -75,7 +75,7 @@ public class PatientDaoImpl implements PatientDao {
 
     @Override
     public void delete(Long id) {
-        Session session = sessionFactory.openSession();
+        Session session = HibernateConfig.getSessionFactory().openSession();
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
@@ -103,22 +103,23 @@ public class PatientDaoImpl implements PatientDao {
     }
 
     // --- READ-ONLY METHODS (Safe to keep Try-With-Resources) ---
-    // These methods don't perform writes, so they don't need transaction rollback logic.
+    // These methods don't perform writes, so they don't need transaction rollback
+    // logic.
 
     @Override
     public List<Patient> getAllPatients() {
-        try (Session session = sessionFactory.openSession()) {
+        try (Session session = HibernateConfig.getSessionFactory().openSession()) {
             logger.debug("Fetching all patients");
             return session.createQuery("FROM Patient", Patient.class).list();
         } catch (Exception e) {
             logger.error("Error fetching all patients", e);
-            throw new RuntimeException("Error fetching patients", e);
+            return java.util.Collections.emptyList();
         }
     }
 
     @Override
     public Patient getPatientById(Long id) {
-        try (Session session = sessionFactory.openSession()) {
+        try (Session session = HibernateConfig.getSessionFactory().openSession()) {
             Patient patient = session.find(Patient.class, id);
             if (patient == null) {
                 logger.warn("No patient found with ID: {}", id);
@@ -132,10 +133,9 @@ public class PatientDaoImpl implements PatientDao {
 
     @Override
     public Optional<Patient> getPatientByEmail(String email) {
-        try (Session session = sessionFactory.openSession()) {
+        try (Session session = HibernateConfig.getSessionFactory().openSession()) {
             Query<Patient> query = session.createQuery(
-                    "FROM Patient WHERE email = :email", Patient.class
-            );
+                    "FROM Patient WHERE email = :email", Patient.class);
             query.setParameter("email", email);
             return query.uniqueResultOptional();
         } catch (Exception e) {
@@ -146,10 +146,9 @@ public class PatientDaoImpl implements PatientDao {
 
     @Override
     public Optional<Patient> getPatientByFullName(String firstName, String lastName) {
-        try (Session session = sessionFactory.openSession()) {
+        try (Session session = HibernateConfig.getSessionFactory().openSession()) {
             Query<Patient> query = session.createQuery(
-                    "FROM Patient WHERE first_name = :fn AND last_name = :ln", Patient.class
-            );
+                    "FROM Patient WHERE first_name = :fn AND last_name = :ln", Patient.class);
             query.setParameter("fn", firstName);
             query.setParameter("ln", lastName);
             return query.uniqueResultOptional();
@@ -161,10 +160,9 @@ public class PatientDaoImpl implements PatientDao {
 
     @Override
     public Optional<Patient> getPatientByCin(String cin) {
-        try (Session session = sessionFactory.openSession()) {
+        try (Session session = HibernateConfig.getSessionFactory().openSession()) {
             Query<Patient> query = session.createQuery(
-                    "FROM Patient WHERE cin = :cin", Patient.class
-            );
+                    "FROM Patient WHERE cin = :cin", Patient.class);
             query.setParameter("cin", cin);
             return query.uniqueResultOptional();
         } catch (Exception e) {
@@ -175,7 +173,7 @@ public class PatientDaoImpl implements PatientDao {
 
     @Override
     public List<Patient> findByRoomId(Long roomId) {
-        try (Session session = sessionFactory.openSession()) {
+        try (Session session = HibernateConfig.getSessionFactory().openSession()) {
             String hql = "SELECT p FROM Patient p WHERE p.room.id = :rid";
             return session.createQuery(hql, Patient.class)
                     .setParameter("rid", roomId)
@@ -188,8 +186,8 @@ public class PatientDaoImpl implements PatientDao {
 
     @Override
     public List<Patient> findByDoctorId(Long doctorId) {
-        try (Session session = sessionFactory.openSession()) {
-            String hql = "SELECT p FROM Patient p WHERE p.doctor.id = :did";
+        try (Session session = HibernateConfig.getSessionFactory().openSession()) {
+            String hql = "SELECT p FROM Patient p WHERE p.doctor.matr = :did";
             return session.createQuery(hql, Patient.class)
                     .setParameter("did", doctorId)
                     .getResultList();

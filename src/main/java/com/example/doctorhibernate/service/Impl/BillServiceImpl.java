@@ -33,7 +33,6 @@ public class BillServiceImpl implements BillService {
             bill.setRoomPrice(roomCost);
         }
 
-
         double treatmentCost = 0;
         StringBuilder summary = new StringBuilder();
 
@@ -48,7 +47,6 @@ public class BillServiceImpl implements BillService {
         bill.setTreatmentSummary(summary.toString());
         bill.setTotalTreatmentCost(treatmentCost);
 
-
         bill.setTotalAmount(roomCost + treatmentCost);
 
         // 4. Save
@@ -59,5 +57,13 @@ public class BillServiceImpl implements BillService {
     @Override
     public List<Bill> getAllBills() {
         return billDao.findAll();
+    }
+
+    @Override
+    public void deleteBill(Long id) {
+        Bill bill = billDao.findById(id);
+        if (bill != null) {
+            billDao.delete(bill);
+        }
     }
 }

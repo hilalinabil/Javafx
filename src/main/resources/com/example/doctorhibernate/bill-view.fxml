@@ -9,9 +9,31 @@
             stylesheets="@styles.css">
 
     <top>
-        <HBox styleClass="header-bar" alignment="CENTER_LEFT">
-            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
-            <Label text="Billing System" styleClass="header-title"/>
+        <HBox alignment="CENTER_LEFT" styleClass="header-bar" BorderPane.alignment="CENTER">
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="12.0">
+                    <children>
+                        <Label text="💰" style="-fx-font-size: 28px;">
+                            <HBox.margin>
+                                <Insets right="8.0" />
+                            </HBox.margin>
+                        </Label>
+                        <VBox alignment="CENTER_LEFT">
+                            <children>
+                                <Label text="Billing System" styleClass="header-title" />
+                                <Label text="Generate invoices and track payments" styleClass="header-subtitle">
+                                    <VBox.margin>
+                                        <Insets top="4.0" />
+                                    </VBox.margin>
+                                </Label>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </children>
+            <padding>
+                <Insets bottom="20.0" left="24.0" right="24.0" top="20.0" />
+            </padding>
         </HBox>
     </top>
 
@@ -40,6 +62,10 @@
                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                 </columnResizePolicy>
             </TableView>
+
+            <HBox alignment="CENTER_RIGHT" spacing="10">
+                <Button text="Delete Selected" styleClass="btn-danger" onAction="#handleDeleteBill"/>
+            </HBox>
         </VBox>
     </center>
 </BorderPane>

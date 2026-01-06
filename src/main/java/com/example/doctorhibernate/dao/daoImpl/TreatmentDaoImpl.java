@@ -1,6 +1,5 @@
 package com.example.doctorhibernate.dao.daoImpl;
 
-
 import com.example.doctorhibernate.config.HibernateConfig;
 import com.example.doctorhibernate.dao.TreatmentDao;
 import com.example.doctorhibernate.entities.Treatment;
@@ -14,6 +13,7 @@ public class TreatmentDaoImpl implements TreatmentDao {
     public void save(Treatment treatment) {
         executeInsideTransaction(session -> session.persist(treatment));
     }
+
     @Override
     public void update(Treatment treatment) {
         executeInsideTransaction(session -> session.merge(treatment));
@@ -26,7 +26,8 @@ public class TreatmentDaoImpl implements TreatmentDao {
 
     @Override
     public Treatment findById(Long id) {
-        if (id == null) return null;
+        if (id == null)
+            return null;
         try (Session session = HibernateConfig.getSessionFactory().openSession()) {
             return session.find(Treatment.class, id);
         } catch (Exception e) {
@@ -42,10 +43,9 @@ public class TreatmentDaoImpl implements TreatmentDao {
         } catch (Exception e) {
             System.err.println("Erreur lors de la récupération des traitements:");
             e.printStackTrace();
-            throw new RuntimeException(e);
+            return java.util.Collections.emptyList();
         }
     }
-
 
     private void executeInsideTransaction(java.util.function.Consumer<Session> action) {
         Transaction tran = null;
@@ -54,7 +54,8 @@ public class TreatmentDaoImpl implements TreatmentDao {
             action.accept(session);
             tran.commit();
         } catch (Exception e) {
-            if (tran != null && tran.isActive()) tran.rollback();
+            if (tran != null && tran.isActive())
+                tran.rollback();
             e.printStackTrace();
             throw new RuntimeException("Erreur Transactionnelle", e);
         }

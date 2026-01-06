@@ -14,22 +14,34 @@ import javafx.scene.layout.HBox;
 
 public class RoomController {
 
-    @FXML private TextField numberField;
-    @FXML private TextField typeField;
-    @FXML private Spinner<Integer> capacityField;
-    @FXML private CheckBox occupiedCheck;
-    @FXML private Button addUpdateButton;
+    @FXML
+    private TextField numberField;
+    @FXML
+    private TextField typeField;
+    @FXML
+    private Spinner<Integer> capacityField;
+    @FXML
+    private CheckBox occupiedCheck;
+    @FXML
+    private Button addUpdateButton;
 
-    @FXML private TableView<Room> roomTable;
-    @FXML private TableColumn<Room, Long> colId;
-    @FXML private TableColumn<Room, String> colNumber;
-    @FXML private TableColumn<Room, String> colType;
-    @FXML private TableColumn<Room, Integer> colCapacity;
-    @FXML private TableColumn<Room, String> colOccupied;
-    @FXML private TableColumn<Room, Void> colActions;
+    @FXML
+    private TableView<Room> roomTable;
+    @FXML
+    private TableColumn<Room, Long> colId;
+    @FXML
+    private TableColumn<Room, String> colNumber;
+    @FXML
+    private TableColumn<Room, String> colType;
+    @FXML
+    private TableColumn<Room, Integer> colCapacity;
+    @FXML
+    private TableColumn<Room, String> colOccupied;
+    @FXML
+    private TableColumn<Room, Void> colActions;
 
     private final ObservableList<Room> data = FXCollections.observableArrayList();
-    private final RoomServiceImpl service = new RoomServiceImpl( new RoomDaoImpl());
+    private final RoomServiceImpl service = new RoomServiceImpl(new RoomDaoImpl());
     private Room currentEditingRoom = null;
 
     @FXML
@@ -37,7 +49,8 @@ public class RoomController {
         colId.setCellValueFactory(cell -> new javafx.beans.property.SimpleObjectProperty<>(cell.getValue().getId()));
         colNumber.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getNumber()));
         colType.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getType()));
-        colCapacity.setCellValueFactory(cell -> new javafx.beans.property.SimpleObjectProperty<>(cell.getValue().getCapacity()));
+        colCapacity.setCellValueFactory(
+                cell -> new javafx.beans.property.SimpleObjectProperty<>(cell.getValue().getCapacity()));
 
         colOccupied.setCellValueFactory(cellData -> {
             Room room = cellData.getValue();
@@ -61,27 +74,29 @@ public class RoomController {
             private final HBox buttonBox = new HBox(5);
             private final Button editButton = new Button("✏️ Edit");
             private final Button deleteButton = new Button("🗑️ Delete");
-            
+
             {
                 buttonBox.setAlignment(Pos.CENTER);
-                
+
                 // Style edit button
-                editButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 5 10; -fx-background-radius: 5; -fx-cursor: hand; -fx-font-size: 11;");
+                editButton.getStyleClass().addAll("button", "btn-primary");
+                editButton.setStyle("-fx-padding: 5 10; -fx-font-size: 11px;");
                 editButton.setOnAction(event -> {
                     Room room = getTableView().getItems().get(getIndex());
                     editRoom(room);
                 });
-                
+
                 // Style delete button
-                deleteButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 5 10; -fx-background-radius: 5; -fx-cursor: hand; -fx-font-size: 11;");
+                deleteButton.getStyleClass().addAll("button", "btn-danger");
+                deleteButton.setStyle("-fx-padding: 5 10; -fx-font-size: 11px;");
                 deleteButton.setOnAction(event -> {
                     Room room = getTableView().getItems().get(getIndex());
                     deleteRoom(room);
                 });
-                
+
                 buttonBox.getChildren().addAll(editButton, deleteButton);
             }
-            
+
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
@@ -96,8 +111,8 @@ public class RoomController {
         roomTable.setItems(data);
 
         // Initialize capacity spinner with min 1, max 4, initial value 1
-        SpinnerValueFactory.IntegerSpinnerValueFactory valueFactory = 
-            new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 4, 1);
+        SpinnerValueFactory.IntegerSpinnerValueFactory valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(
+                1, 4, 1);
         capacityField.setValueFactory(valueFactory);
 
         refresh();
@@ -113,8 +128,7 @@ public class RoomController {
                         numberField.getText(),
                         typeField.getText(),
                         cap,
-                        occupiedCheck.isSelected()
-                );
+                        occupiedCheck.isSelected());
                 data.add(created);
                 showSuccess("Room added successfully!");
             } else {
@@ -124,8 +138,7 @@ public class RoomController {
                         numberField.getText(),
                         typeField.getText(),
                         cap,
-                        occupiedCheck.isSelected()
-                );
+                        occupiedCheck.isSelected());
                 // Refresh the table to show updated data
                 refresh();
                 showSuccess("Room updated successfully!");
@@ -146,8 +159,9 @@ public class RoomController {
         Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmAlert.setTitle("Confirm Delete");
         confirmAlert.setHeaderText("Delete Room");
-        confirmAlert.setContentText("Are you sure you want to delete room " + room.getNumber() + "?\nThis action cannot be undone.");
-        
+        confirmAlert.setContentText(
+                "Are you sure you want to delete room " + room.getNumber() + "?\nThis action cannot be undone.");
+
         confirmAlert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 try {

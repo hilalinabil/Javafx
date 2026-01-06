@@ -1,89 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.HBox?>
 
-<BorderPane fx:id="mainLayout" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="1200.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.doctorhibernate.controller.MainController">
+<BorderPane fx:id="mainLayout" 
+            prefHeight="1600.0" prefWidth="2560.0"
+            xmlns="http://javafx.com/javafx/17" 
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.doctorhibernate.controller.MainController"
+            stylesheets="@styles.css">
 
+    <!-- LEFT SIDEBAR -->
     <left>
-        <VBox prefWidth="240.0" styleClass="sidebar-dark" BorderPane.alignment="CENTER">
-            <children>
-                <HBox alignment="CENTER_LEFT" spacing="10.0">
-                    <padding>
-                        <Insets bottom="30.0" left="20.0" top="30.0" />
-                    </padding>
-                    <children>
-                        <Label text="🏥" textFill="WHITE">
+        <VBox styleClass="sidebar" prefWidth="260.0" spacing="0.0">
+            <!-- Brand Logo Area -->
+            <VBox spacing="5" alignment="CENTER_LEFT">
+                <padding>
+                    <Insets top="32" left="24" bottom="40" right="24"/>
+                </padding>
+                 <HBox spacing="12" alignment="CENTER_LEFT">
+                    <Label text="🏥" style="-fx-font-size: 28px;"/>
+                    <VBox>
+                        <Label text="MedNexus" textFill="white">
                             <font>
-                                <Font size="24.0" />
+                                <Font name="System Bold" size="20.0" />
                             </font>
                         </Label>
-                        <VBox>
-                            <children>
-                                <Label text="MedNexus" textFill="WHITE">
-                                    <font>
-                                        <Font name="System Bold" size="20.0" />
-                                    </font>
-                                </Label>
-                                <Label text="Admin Panel" textFill="#9ca3af">
-                                    <font>
-                                        <Font size="12.0" />
-                                    </font>
-                                </Label>
-                            </children>
-                        </VBox>
-                    </children>
-                </HBox>
+                        <Label text="Enterprise Edition" textFill="#94a3b8" style="-fx-font-size: 11px;"/>
+                    </VBox>
+                 </HBox>
+            </VBox>
 
-                <VBox spacing="5.0">
-                    <children>
-                        <Label text="MANAGEMENT" textFill="#6b7280">
-                            <font>
-                                <Font name="System Bold" size="11.0" />
-                            </font>
-                            <VBox.margin>
-                                <Insets bottom="5.0" left="20.0" />
-                            </VBox.margin>
-                        </Label>
+            <!-- Navigation Menu -->
+            <VBox spacing="4.0" VBox.vgrow="ALWAYS">
+                <padding>
+                     <Insets right="12"/> 
+                     <!-- Padding only on right so pills attach to left edge but have gap on right -->
+                </padding>
 
-                        <Button alignment="BASELINE_LEFT" maxWidth="Infinity" mnemonicParsing="false" onAction="#showPatients" styleClass="nav-btn" text="👨‍ Patients" />
-                        <Button alignment="BASELINE_LEFT" maxWidth="Infinity" mnemonicParsing="false" onAction="#showDoctors" styleClass="nav-btn" text="👨‍ Doctors" textFill="#460c0c" />
-                        <Button alignment="BASELINE_LEFT" maxWidth="Infinity" mnemonicParsing="false" onAction="#showRooms" styleClass="nav-btn" text="🛏  Rooms" />
-                        <Button alignment="BASELINE_LEFT" maxWidth="Infinity" mnemonicParsing="false" onAction="#showTreatments" styleClass="nav-btn" text="💊  Treatments" />
-                        <Button alignment="BASELINE_LEFT" maxWidth="Infinity" onAction="#showBilling" styleClass="nav-btn" text="💰  Billing" />
-                    </children>
-                </VBox>
+                <!-- Menu Group -->
+                <Label text="MANAGEMENT" textFill="#475569" style="-fx-font-size: 11px; -fx-font-weight: bold;">
+                    <VBox.margin><Insets left="24" bottom="8"/></VBox.margin>
+                </Label>
 
-                <Pane VBox.vgrow="ALWAYS" />
+                <Button alignment="BASELINE_LEFT" maxWidth="Infinity" onAction="#showPatients" styleClass="nav-btn" text="👥   Patients" />
+                <Button alignment="BASELINE_LEFT" maxWidth="Infinity" onAction="#showDoctors" styleClass="nav-btn" text="🩺   Doctors" />
+                <Button alignment="BASELINE_LEFT" maxWidth="Infinity" onAction="#showRooms" styleClass="nav-btn" text="🛏️   Rooms" />
+                <Button alignment="BASELINE_LEFT" maxWidth="Infinity" onAction="#showTreatments" styleClass="nav-btn" text="💉   Treatments" />
+                <Button alignment="BASELINE_LEFT" maxWidth="Infinity" onAction="#showBilling" styleClass="nav-btn" text="💰   Billing" />
 
-                <VBox spacing="10.0">
-                    <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" />
-                    </padding>
-                    <children>
-                        <Separator opacity="0.1" />
-                        <Button alignment="BASELINE_LEFT" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleLogout" styleClass="nav-btn" text="🚪  Log Out" />
-                    </children>
-                </VBox>
-            </children>
+                <Region VBox.vgrow="ALWAYS" /> <!-- Spacer -->
+
+                <!-- Bottom Actions -->
+                <Button alignment="BASELINE_LEFT" maxWidth="Infinity" onAction="#handleLogout" styleClass="nav-btn" text="🚪   Log Out">
+                    <VBox.margin><Insets bottom="20"/></VBox.margin>
+                </Button>
+            </VBox>
         </VBox>
     </left>
+    
+    <!-- CENTER CONTENT (Views load here) -->
+    <!-- Content logic is handled by the controller's loadView -->
 
-    <top>
-    </top>
-
-    <center>
-        <BorderPane style="-fx-background-color: #f3f4f6;">
-            <center>
-                <Label text="Loading..." textFill="#9ca3af" />
-            </center>
-        </BorderPane>
-    </center>
 </BorderPane>

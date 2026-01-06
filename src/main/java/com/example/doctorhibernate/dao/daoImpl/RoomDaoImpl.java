@@ -1,6 +1,5 @@
 package com.example.doctorhibernate.dao.daoImpl;
 
-
 import com.example.doctorhibernate.config.HibernateConfig;
 import com.example.doctorhibernate.dao.RoomDao;
 import com.example.doctorhibernate.entities.Room;
@@ -42,7 +41,7 @@ public class RoomDaoImpl implements RoomDao {
             return session.createQuery("select r from Room r", Room.class).getResultList();
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return java.util.Collections.emptyList();
         }
     }
 
@@ -66,7 +65,8 @@ public class RoomDaoImpl implements RoomDao {
         Transaction transaction = null;
         try (Session session = HibernateConfig.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            // We usually need to merge before deleting to attach the object to the current session
+            // We usually need to merge before deleting to attach the object to the current
+            // session
             // or simply fetch it by ID then delete if the object is detached.
             session.remove(session.contains(room) ? room : session.merge(room));
             transaction.commit();

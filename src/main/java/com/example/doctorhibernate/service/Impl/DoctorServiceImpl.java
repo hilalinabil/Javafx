@@ -14,19 +14,15 @@ public class DoctorServiceImpl implements DoctorService {
 
     private static final Logger logger = LoggerFactory.getLogger(DoctorServiceImpl.class);
 
-
     private DoctorDao doctorDAO = new DoctorDaoImpl();
 
-
-    private static final String EMAIL_PATTERN =
-            "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+    private static final String EMAIL_PATTERN = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
     private static Pattern emailPattern = Pattern.compile(EMAIL_PATTERN);
 
     @Override
     public void createDoctor(Doctor req) {
 
         logger.info("Creating doctor: {} {}", req.getFirst_name(), req.getLast_name());
-
 
         if (req.getFirst_name() == null || req.getFirst_name().trim().isEmpty()) {
             logger.warn("Validation failed: First name is required");
@@ -53,12 +49,10 @@ public class DoctorServiceImpl implements DoctorService {
             throw new IllegalArgumentException("department is required");
         }
 
-
         if (!isValidEmail(req.getEmail())) {
             logger.warn("Validation failed: Invalid email format: {}", req.getEmail());
             throw new IllegalArgumentException("Invalid email format");
         }
-
 
         if (emailExists(req.getEmail().trim())) {
             logger.warn("Validation failed: Email already exists: {}", req.getEmail());
@@ -86,7 +80,7 @@ public class DoctorServiceImpl implements DoctorService {
         logger.info("Doctor created successfully with ID: {}", doctor.getMatr());
     }
 
-    //  READ OPERATIONS
+    // READ OPERATIONS
 
     @Override
     public Doctor getDoctorById(Long matr) {
@@ -103,6 +97,7 @@ public class DoctorServiceImpl implements DoctorService {
 
         return doctor;
     }
+
     @Override
     public List<Doctor> getAllDoctors() {
         logger.info("Fetching all doctors");
@@ -159,7 +154,6 @@ public class DoctorServiceImpl implements DoctorService {
         return doctor;
     }
 
-
     // UPDATE OPERATION
 
     @Override
@@ -182,7 +176,7 @@ public class DoctorServiceImpl implements DoctorService {
             throw new IllegalArgumentException("Last name is required");
         }
 
-        if (req.getEmail()== null || req.getEmail().trim().isEmpty()) {
+        if (req.getEmail() == null || req.getEmail().trim().isEmpty()) {
             throw new IllegalArgumentException("Email is required");
         }
 
@@ -209,8 +203,8 @@ public class DoctorServiceImpl implements DoctorService {
         // ===== FETCH AND UPDATE =====
         Doctor newdoc = doctorDAO.findById(req.getMatr());
 
-        if (newdoc== null) {
-            logger.warn("Doctor not found: {}", newdoc.getMatr() );
+        if (newdoc == null) {
+            logger.warn("Doctor not found: {}", newdoc.getMatr());
             throw new IllegalArgumentException("Doctor not found");
         }
 
@@ -244,12 +238,22 @@ public class DoctorServiceImpl implements DoctorService {
             throw new IllegalArgumentException("Doctor not found");
         }
 
+        // 1. Unassign all patients from this doctor
+        com.example.doctorhibernate.dao.PatientDao patientDao = new com.example.doctorhibernate.dao.daoImpl.PatientDaoImpl();
+        List<com.example.doctorhibernate.entities.Patient> patients = patientDao.findByDoctorId(matr);
+
+        for (com.example.doctorhibernate.entities.Patient p : patients) {
+            p.setDoctor(null); // Unassign
+            patientDao.update(p);
+        }
+
+        // 2. Delete the doctor
         doctorDAO.delete(doctor);
 
         logger.info("Doctor deleted successfully: {}", matr);
     }
 
-    //  VALIDATION HELPER METHODS
+    // VALIDATION HELPER METHODS
 
     @Override
     public boolean isValidEmail(String email) {

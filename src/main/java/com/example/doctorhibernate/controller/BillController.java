@@ -12,16 +12,25 @@ import javafx.scene.control.*;
 
 public class BillController {
 
-    @FXML private ComboBox<Patient> patientCombo;
-    @FXML private Label totalLabel;
-    @FXML private TableView<Bill> billTable;
+    @FXML
+    private ComboBox<Patient> patientCombo;
+    @FXML
+    private Label totalLabel;
+    @FXML
+    private TableView<Bill> billTable;
 
-    @FXML private TableColumn<Bill, Long> colId;
-    @FXML private TableColumn<Bill, String> colPatient;
-    @FXML private TableColumn<Bill, String> colDate;
-    @FXML private TableColumn<Bill, String> colRoom;
-    @FXML private TableColumn<Bill, Double> colTotal;
-    @FXML private TableColumn<Bill, String> colPaid;
+    @FXML
+    private TableColumn<Bill, Long> colId;
+    @FXML
+    private TableColumn<Bill, String> colPatient;
+    @FXML
+    private TableColumn<Bill, String> colDate;
+    @FXML
+    private TableColumn<Bill, String> colRoom;
+    @FXML
+    private TableColumn<Bill, Double> colTotal;
+    @FXML
+    private TableColumn<Bill, String> colPaid;
 
     private final BillServiceImpl billService = new BillServiceImpl();
     private final PatientServiceImpl patientService = new PatientServiceImpl();
@@ -37,14 +46,14 @@ public class BillController {
             }
             return new SimpleStringProperty("N/A");
         });
-        colTotal.setCellValueFactory(cell -> new javafx.beans.property.SimpleObjectProperty<>(cell.getValue().getTotalAmount()));
-        colRoom.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getRoomNumber() != null ? cell.getValue().getRoomNumber() : "N/A"));
+        colTotal.setCellValueFactory(
+                cell -> new javafx.beans.property.SimpleObjectProperty<>(cell.getValue().getTotalAmount()));
+        colRoom.setCellValueFactory(cell -> new SimpleStringProperty(
+                cell.getValue().getRoomNumber() != null ? cell.getValue().getRoomNumber() : "N/A"));
 
-        colPatient.setCellValueFactory(cell ->
-                new SimpleStringProperty(cell.getValue().getPatient().getCin()));
+        colPatient.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getPatient().getCin()));
 
-        colPaid.setCellValueFactory(cell ->
-                new SimpleStringProperty(cell.getValue().isPaid() ? "Paid" : "Pending"));
+        colPaid.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().isPaid() ? "Paid" : "Pending"));
 
         billTable.setItems(billList);
 
@@ -62,8 +71,10 @@ public class BillController {
             @Override
             protected void updateItem(Patient item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty || item == null) setText(null);
-                else setText(item.getCin() + " - " + item.getLast_name());
+                if (empty || item == null)
+                    setText(null);
+                else
+                    setText(item.getCin() + " - " + item.getLast_name());
             }
         });
         patientCombo.setButtonCell(patientCombo.getCellFactory().call(null));
@@ -85,6 +96,30 @@ public class BillController {
 
     private void refreshTable() {
         billList.setAll(billService.getAllBills());
+    }
+
+    @FXML
+    public void handleDeleteBill() {
+        Bill selected = billTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showAlert("Error", "Select a bill to delete.");
+            return;
+        }
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete bill #" + selected.getId() + "?", ButtonType.YES,
+                ButtonType.NO);
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.YES) {
+                try {
+                    billService.deleteBill(selected.getId());
+                    refreshTable();
+                    showAlert("Success", "Bill deleted successfully.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    showAlert("Error", "Failed to delete bill: " + e.getMessage());
+                }
+            }
+        });
     }
 
     private void showAlert(String title, String msg) {

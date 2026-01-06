@@ -4,9 +4,8 @@ import com.example.doctorhibernate.config.HibernateConfig;
 import com.example.doctorhibernate.dao.DoctorDao;
 import com.example.doctorhibernate.entities.Doctor;
 
-
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,29 +13,25 @@ import org.slf4j.LoggerFactory;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
 public class DoctorDaoImpl implements DoctorDao {
 
     private final static Logger logger = LoggerFactory.getLogger(DoctorDaoImpl.class);
 
-    private SessionFactory sessionFactory = HibernateConfig.getSessionFactory();
-
+    // Removed field sessionFactory to prevent initialization crash
 
     @Override
-    public void save(Doctor doctor)  {
+    public void save(Doctor doctor) {
         Session session = null;
         try {
             logger.debug("Saving doctor: {}", doctor.getFirst_name());
 
-            session = sessionFactory.openSession();
-
+            session = HibernateConfig.getSessionFactory().openSession();
 
             session.beginTransaction();
 
             doctor.setCreatedAt(LocalDateTime.now());
 
             session.persist(doctor);
-
 
             session.getTransaction().commit();
 
@@ -66,7 +61,7 @@ public class DoctorDaoImpl implements DoctorDao {
         try {
             logger.debug("Finding doctor with ID: {}", matr);
 
-            session = sessionFactory.openSession();
+            session = HibernateConfig.getSessionFactory().openSession();
 
             Doctor doctor = session.find(Doctor.class, matr);
 
@@ -95,7 +90,7 @@ public class DoctorDaoImpl implements DoctorDao {
         try {
             logger.debug("Finding all doctors");
 
-            session = sessionFactory.openSession();
+            session = HibernateConfig.getSessionFactory().openSession();
 
             Query<Doctor> query = session.createQuery("FROM Doctor ORDER BY id DESC", Doctor.class);
 
@@ -106,8 +101,7 @@ public class DoctorDaoImpl implements DoctorDao {
 
         } catch (Exception e) {
             logger.error("Error finding all doctors: {}", e.getMessage(), e);
-            throw new RuntimeException("Error finding doctors: " + e.getMessage(), e);
-
+            return java.util.Collections.emptyList();
         } finally {
             if (session != null && session.isOpen()) {
                 session.close();
@@ -121,12 +115,11 @@ public class DoctorDaoImpl implements DoctorDao {
         try {
             logger.debug("Finding doctor with email: {}", email);
 
-            session = sessionFactory.openSession();
+            session = HibernateConfig.getSessionFactory().openSession();
 
             Query<Doctor> query = session.createQuery(
                     "FROM Doctor WHERE email = :email",
-                    Doctor.class
-            );
+                    Doctor.class);
 
             query.setParameter("email", email);
 
@@ -157,12 +150,11 @@ public class DoctorDaoImpl implements DoctorDao {
         try {
             logger.debug("Finding doctors with first name: {}", firstName);
 
-            session = sessionFactory.openSession();
+            session = HibernateConfig.getSessionFactory().openSession();
 
             Query<Doctor> query = session.createQuery(
                     "FROM Doctor WHERE first_name LIKE :firstName ORDER BY first_name",
-                    Doctor.class
-            );
+                    Doctor.class);
 
             query.setParameter("firstName", "%" + firstName + "%");
 
@@ -188,12 +180,11 @@ public class DoctorDaoImpl implements DoctorDao {
         try {
             logger.debug("Finding doctors with last name: {}", lastName);
 
-            session = sessionFactory.openSession();
+            session = HibernateConfig.getSessionFactory().openSession();
 
             Query<Doctor> query = session.createQuery(
                     "FROM Doctor WHERE last_name LIKE :lastName ORDER BY last_name",
-                    Doctor.class
-            );
+                    Doctor.class);
 
             query.setParameter("lastName", "%" + lastName + "%");
 
@@ -219,12 +210,11 @@ public class DoctorDaoImpl implements DoctorDao {
         try {
             logger.debug("Finding doctor with license: {}", licenseNumber);
 
-            session = sessionFactory.openSession();
+            session = HibernateConfig.getSessionFactory().openSession();
 
             Query<Doctor> query = session.createQuery(
                     "FROM Doctor WHERE licenseNumber = :license",
-                    Doctor.class
-            );
+                    Doctor.class);
 
             query.setParameter("license", licenseNumber);
             Doctor doctor = query.uniqueResult();
@@ -246,17 +236,14 @@ public class DoctorDaoImpl implements DoctorDao {
         }
     }
 
-
-
     @Override
     public void update(Doctor doctor) {
         Session session = null;
         try {
             logger.debug("Updating doctor: {}", doctor.getMatr());
 
-            session = sessionFactory.openSession();
+            session = HibernateConfig.getSessionFactory().openSession();
             session.beginTransaction();
-
 
             doctor.setUpdatedAt(LocalDateTime.now());
 
@@ -280,20 +267,15 @@ public class DoctorDaoImpl implements DoctorDao {
         }
     }
 
-
-
-
-
     @Override
     public void deleteById(Long matr) {
-        Doctor doctor =  findById(matr);
+        Doctor doctor = findById(matr);
         if (doctor != null) {
             delete(doctor);
         } else {
             logger.warn("Cannot delete doctor: ID {} not found", matr);
         }
     }
-
 
     // ===== HELPER OPERATIONS =====
 
@@ -311,12 +293,11 @@ public class DoctorDaoImpl implements DoctorDao {
     public long countAll() {
         Session session = null;
         try {
-            session = sessionFactory.openSession();
+            session = HibernateConfig.getSessionFactory().openSession();
 
             Query<Long> query = session.createQuery(
                     "SELECT COUNT(*) FROM Doctor",
-                    Long.class
-            );
+                    Long.class);
 
             Long count = query.uniqueResult();
 
@@ -339,7 +320,7 @@ public class DoctorDaoImpl implements DoctorDao {
         try {
             logger.debug("Deleting doctor: {}", doctor.getMatr());
 
-            session = sessionFactory.openSession();
+            session = HibernateConfig.getSessionFactory().openSession();
             session.beginTransaction();
 
             Doctor managedDoctor = session.merge(doctor);
